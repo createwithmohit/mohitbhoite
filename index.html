@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohit Bhoite | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000;
+            color: #fff;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1630&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -5px;
+            left: 0;
+            background-color: #fff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .video-thumbnail {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .video-thumbnail:hover {
+            transform: scale(1.03);
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+        }
+
+        .video-thumbnail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .video-thumbnail:hover::before {
+            opacity: 1;
+        }
+
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: white;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .video-thumbnail:hover .play-icon {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .video-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .video-container {
+            width: 80%;
+            max-width: 1200px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 70vh;
+            border: none;
+        }
+
+        #instagram-embed {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        #youtube-embed,
+        #instagram-embed {
+            transition: all 0.3s ease;
+        }
+
+        #youtube-embed.hidden,
+        #instagram-embed.hidden {
+            display: none;
+        }
+
+        .instagram-media {
+            min-width: 100% !important;
+            background: #000 !important;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.8s;
+        }
+
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0) translateX(-50%);
+            }
+
+            40% {
+                transform: translateY(-20px) translateX(-50%);
+            }
+
+            60% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+        }
+
+        .grid-item {
+            transition: all 0.3s ease;
+        }
+
+        .grid-item:hover {
+            transform: scale(1.05);
+        }
+
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 py-6 px-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-xl font-light tracking-wider">
+                <span class="hidden md:inline">MOHIT BHOITE</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link text-white hover:text-gray-300">HOME</a>
+                <a href="#work" class="nav-link text-white hover:text-gray-300">WORK</a>
+                <a href="#about" class="nav-link text-white hover:text-gray-300">ABOUT</a>
+                <a href="#contact" class="nav-link text-white hover:text-gray-300">CONTACT</a>
+            </div>
+            <div class="md:hidden">
+                <button class="mobile-menu-button text-white focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="mobile-menu hidden md:hidden bg-black bg-opacity-90 w-full absolute left-0 top-20 py-4">
+            <div class="flex flex-col items-center space-y-6">
+                <a href="#home" class="nav-link text-white hover:text-gray-300">HOME</a>
+                <a href="#work" class="nav-link text-white hover:text-gray-300">WORK</a>
+                <a href="#about" class="nav-link text-white hover:text-gray-300">ABOUT</a>
+                <a href="#contact" class="nav-link text-white hover:text-gray-300">CONTACT</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero flex items-center justify-center relative">
+        <div class="text-center">
+            <h1 class="text-5xl md:text-7xl font-light tracking-wider mb-4 fade-in">MOHIT BHOITE</h1>
+            <h2 class="text-xl md:text-2xl font-light tracking-widest text-gray-300 mb-8 fade-in delay-1">CINEMATORGRAPHER | EXECUTIVE PRODUCER</h2>
+            <div class="flex justify-center space-x-4 fade-in delay-2">
+                <a href="#work"
+                    class="px-8 py-3 border border-white text-white hover:bg-white hover:text-black transition duration-300">VIEW
+                    WORK</a>
+                <a href="#contact"
+                    class="px-8 py-3 bg-white text-black hover:bg-transparent hover:text-white border border-white transition duration-300">CONTACT</a>
+            </div>
+        </div>
+
+        <a href="#work" class="scroll-down">
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </section>
+
+    <!-- Work Section -->
+    <section id="work" class="py-20 bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-light tracking-wider mb-4">SELECTED WORK</h2>
+                <div class="w-20 h-px bg-white mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Video 1 - YouTube -->
+                <div class="video-thumbnail group grid-item">
+                    <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad" alt="Film Project"
+                        class="w-full h-full object-cover">
+                    <div class="play-icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="absolute bottom-0 left-0 p-6 z-10">
+                        <h3 class="text-xl font-light mb-1">SHADOWS OF TIME</h3>
+                        <p class="text-sm text-gray-300">Short Film • 2023</p>
+                    </div>
+                    <div class="video-data" data-video-id="https://www.youtube.com/embed/gPy5xRSqwco?autoplay=1"></div>
+                </div>
+
+                <!-- Video 2 - Instagram -->
+                <div class="video-thumbnail group grid-item">
+                    <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1159&q=80"
+                        alt="Commercial Project" class="w-full h-full object-cover">
+                    <div class="play-icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="absolute bottom-0 left-0 p-6 z-10">
+                        <h3 class="text-xl font-light mb-1">NIKE - JUST DO IT</h3>
+                        <p class="text-sm text-gray-300">Commercial • 2023</p>
+                    </div>
+                    <div class="video-data" data-video-id="https://www.instagram.com/reel/DHNicjTPG1a/"></div>
+                </div>
+
+                <!-- Video 3 - YouTube -->
+                <div class="video-thumbnail group grid-item">
+                    <img src="https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                        alt="Music Video Project" class="w-full h-full object-cover">
+                    <div class="play-icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="absolute bottom-0 left-0 p-6 z-10">
+                        <h3 class="text-xl font-light mb-1">THE WEEKND - BLINDING LIGHTS</h3>
+                        <p class="text-sm text-gray-300">Music Video • 2022</p>
+                    </div>
+                    <div class="video-data" data-video-id="https://www.youtube.com/embed/0NnwfiuG-As?autoplay=1"></div>
+                </div>
+
+                <!-- Video 4 - YouTube -->
+                <div class="video-thumbnail group grid-item">
+                    <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                        alt="Documentary Project" class="w-full h-full object-cover">
+                    <div class="play-icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="absolute bottom-0 left-0 p-6 z-10">
+                        <h3 class="text-xl font-light mb-1">HIDDEN REALMS</h3>
+                        <p class="text-sm text-gray-300">Documentary • 2022</p>
+                    </div>
+                    <div class="video-data" data-video-id="https://www.youtube.com/embed/z1WHSoFobQU?autoplay=1"></div>
+                </div>
+
+                <!-- Video 5 - YouTube -->
+                <div class="video-thumbnail group grid-item">
+                    <img src="https://images.unsplash.com/photo-1543536448-d209d2d13a1c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                        alt="Fashion Project" class="w-full h-full object-cover">
+                    <div class="play-icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="absolute bottom-0 left-0 p-6 z-10">
+                        <h3 class="text-xl font-light mb-1">VOGUE - SUMMER EDITION</h3>
+                        <p class="text-sm text-gray-300">Fashion • 2021</p>
+                    </div>
+                    <div class="video-data" data-video-id="https://www.youtube.com/embed/9JprvsZrzWE?autoplay=1"></div>
+                </div>
+
+                <!-- Video 6 - YouTube -->
+                <div class="video-thumbnail group grid-item">
+                    <img src="https://images.unsplash.com/photo-1486578077620-8a022ddd481f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
+                        alt="Travel Project" class="w-full h-full object-cover">
+                    <div class="play-icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="absolute bottom-0 left-0 p-6 z-10">
+                        <h3 class="text-xl font-light mb-1">WANDERLUST</h3>
+                        <p class="text-sm text-gray-300">Travel Series • 2021</p>
+                    </div>
+                    <div class="video-data" data-video-id="https://www.youtube.com/embed/DGNTrBhXnec?autoplay=1"></div>
+                </div>
+
+                <!-- Instagram Reel -->
+                <div class="video-thumbnail group grid-item">
+                    <img src="https://images.unsplash.com/photo-1486578077620-8a022ddd481f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Instagram Reel thumbnail"
+                        class="w-full h-full object-cover">
+                    <div class="play-icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="absolute bottom-0 left-0 p-6 z-10">
+                        <h3 class="text-xl font-light mb-1">INSTAGRAM REEL</h3>
+                        <p class="text-sm text-gray-300">Reel • Year</p>
+                    </div>
+                    <div class="video-data" data-video-id="https://www.instagram.com/reel/C0MScY-Ou82/"></div>
+                </div>
+            </div>
+
+            <div class="text-center mt-16">
+                <a href="#"
+                    class="px-8 py-3 border border-white text-white hover:bg-white hover:text-black transition duration-300">VIEW
+                    ALL PROJECTS</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Modal -->
+    <div class="video-modal">
+        <div class="video-container">
+            <span class="close-modal">
+                <i class="fas fa-times"></i>
+            </span>
+            <div id="youtube-embed">
+                <iframe src="" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+            <div id="instagram-embed" class="hidden">
+                <!-- Instagram embed will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
+                    <div class="relative floating">
+                        <img src="m2.jpg"
+                            alt="Mohit Bohite" class="w-full max-w-md mx-auto rounded shadow-xl">
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-light tracking-wider mb-6">ABOUT MOHIT</h2>
+                    <div class="w-20 h-px bg-white mb-6"></div>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        Mohit Bhoite is an award-winning Director of Photography based in Vadodara, India. With over 2
+                        years of experience in the film industry, Mohit has developed a distinctive visual style that
+                        combines cinematic storytelling with technical precision.
+                    </p>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        His work spans feature films, commercials, music videos, and documentary projects. Mohit's
+                        ability to capture emotion through light and composition has made him one of the most
+                        sought-after cinematographers in the industry.
+                    </p>
+                    <p class="text-gray-300 mb-8 leading-relaxed">
+                        When not on set, Mohit enjoys mentoring young filmmakers and experimenting with new camera
+                        technologies to push the boundaries of visual storytelling.
+                    </p>
+                    <a href="#contact"
+                        class="px-8 py-3 border border-white text-white hover:bg-white hover:text-black transition duration-300">GET
+                        IN TOUCH</a>
+                </div>
+            </div>
+
+
+            <div class="mt-20">
+                <h3 class="text-2xl font-light tracking-wider mb-8 text-center">CLIENTS & COLLABORATIONS</h3>
+                <div class="flex flex-wrap justify-center items-center gap-10">
+                    <!-- Apple -->
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" 
+                         alt="Apple" class="h-10 opacity-70 hover:opacity-100 transition duration-300">
+                    
+                    <!-- Netflix -->
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Netflix_2015_N_logo.svg" 
+                         alt="Netflix" class="h-10 opacity-70 hover:opacity-100 transition duration-300">
+                    
+                    <!-- Amazon -->
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" 
+                         alt="Amazon" class="h-8 opacity-70 hover:opacity-100 transition duration-300">
+                    
+                    <!-- Google -->
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" 
+                         alt="Google" class="h-10 opacity-70 hover:opacity-100 transition duration-300">
+                    
+                    <!-- Microsoft -->
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" 
+                         alt="Microsoft" class="h-8 opacity-70 hover:opacity-100 transition duration-300">
+                    
+                    <!-- Samsung -->
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg" 
+                         alt="Samsung" class="h-8 opacity-70 hover:opacity-100 transition duration-300">
+                    
+                    <!-- Coca-Cola -->
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg" 
+                         alt="Coca-Cola" class="h-12 opacity-70 hover:opacity-100 transition duration-300">
+                    
+                    <!-- Disney -->
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" 
+                         alt="Disney" class="h-10 opacity-70 hover:opacity-100 transition duration-300">
+                </div>
+            </div>
+            <!-- <div class="mt-20">
+                <h3 class="text-2xl font-light tracking-wider mb-8 text-center">CLIENTS & COLLABORATIONS</h3>
+                <div class="flex flex-wrap justify-center items-center gap-10">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/HP_logo_2012.svg/1200px-HP_logo_2012.svg.png"
+                        alt="HP" class="h-12 opacity-70 hover:opacity-100 transition duration-300">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_NIKE.svg/1200px-Logo_NIKE.svg.png"
+                        alt="Nike" class="h-8 opacity-70 hover:opacity-100 transition duration-300">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/1200px-Adidas_Logo.svg.png"
+                        alt="Adidas" class="h-10 opacity-70 hover:opacity-100 transition duration-300">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Sony_logo.svg/1200px-Sony_logo.svg.png"
+                        alt="Sony" class="h-8 opacity-70 hover:opacity-100 transition duration-300">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Spotify_logo_with_text.svg/1200px-Spotify_logo_with_text.svg.png"
+                        alt="Spotify" class="h-10 opacity-70 hover:opacity-100 transition duration-300">
+                </div>
+            </div> -->
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-light tracking-wider mb-4">GET IN TOUCH</h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">For collaborations, inquiries or just to say hello</p>
+                <div class="w-20 h-px bg-white mx-auto mt-4"></div>
+            </div>
+
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
+                    <h3 class="text-xl font-light tracking-wider mb-6">CONTACT INFO</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="text-gray-300 mr-4 mt-1">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-light text-white mb-1">EMAIL</h4>
+                                <p class="text-gray-300">mohitbhoite@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-gray-300 mr-4 mt-1">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-light text-white mb-1">PHONE</h4>
+                                <p class="text-gray-300">+91 70698 21372</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-gray-300 mr-4 mt-1">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-light text-white mb-1">STUDIO</h4>
+                                <p class="text-gray-300">Vadodara, Gujarat, India</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-light tracking-wider mt-12 mb-6">FOLLOW</h3>
+                    <div class="flex space-x-6">
+                        <a href="#" class="social-icon text-gray-300 hover:text-white text-xl">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon text-gray-300 hover:text-white text-xl">
+                            <i class="fab fa-vimeo-v"></i>
+                        </a>
+                        <a href="#" class="social-icon text-gray-300 hover:text-white text-xl">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-icon text-gray-300 hover:text-white text-xl">
+                            <i class="fab fa-imdb"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="md:w-1/2">
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <input type="text" placeholder="Name"
+                                    class="w-full px-4 py-3 bg-transparent border-b border-gray-600 text-white focus:border-white outline-none transition duration-300">
+                            </div>
+                            <div>
+                                <input type="email" placeholder="Email"
+                                    class="w-full px-4 py-3 bg-transparent border-b border-gray-600 text-white focus:border-white outline-none transition duration-300">
+                            </div>
+                        </div>
+                        <div>
+                            <input type="text" placeholder="Subject"
+                                class="w-full px-4 py-3 bg-transparent border-b border-gray-600 text-white focus:border-white outline-none transition duration-300">
+                        </div>
+                        <div>
+                            <textarea placeholder="Message" rows="5"
+                                class="w-full px-4 py-3 bg-transparent border-b border-gray-600 text-white focus:border-white outline-none transition duration-300"></textarea>
+                        </div>
+                        <button type="submit"
+                            class="px-8 py-3 border border-white text-white hover:bg-white hover:text-black transition duration-300 w-full md:w-auto">
+                            SEND MESSAGE
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 bg-black border-t border-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <span class="text-xl font-light tracking-wider">MOHIT BHOITE</span>
+                </div>
+                <div class="text-gray-400 text-sm">
+                    © 2025 Mohit Bhoite. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-button').addEventListener('click', function () {
+            document.querySelector('.mobile-menu').classList.toggle('hidden');
+        });
+
+        // Video modal functionality
+        const videoThumbnails = document.querySelectorAll('.video-thumbnail');
+        const videoModal = document.querySelector('.video-modal');
+        const closeModal = document.querySelector('.close-modal');
+        const youtubeEmbed = document.querySelector('#youtube-embed iframe');
+        const instagramEmbed = document.getElementById('instagram-embed');
+
+        videoThumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('click', function () {
+                const videoUrl = this.querySelector('.video-data').getAttribute('data-video-id');
+
+                // Hide both embed containers initially
+                youtubeEmbed.src = '';
+                instagramEmbed.classList.add('hidden');
+                document.getElementById('youtube-embed').classList.add('hidden');
+
+                if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+                    // Handle YouTube videos
+                    let videoId;
+
+                    if (videoUrl.includes('youtube.com/watch')) {
+                        videoId = videoUrl.split('v=')[1].split('&')[0];
+                    } else if (videoUrl.includes('youtu.be')) {
+                        videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
+                    } else {
+                        // For direct embed links
+                        videoId = videoUrl.split('embed/')[1].split('?')[0];
+                    }
+
+                    const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+                    youtubeEmbed.src = embedUrl;
+                    document.getElementById('youtube-embed').classList.remove('hidden');
+                } else if (videoUrl.includes('instagram.com')) {
+                    // Handle Instagram Reels
+                    const reelId = videoUrl.split('/reel/')[1].split('/')[0];
+                    instagramEmbed.innerHTML = `
+                        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/${reelId}/"
+                            data-instgrm-version="14" style="width:100%;">
+                            <div style="padding:16px;">
+                                <div style="display: flex; justify-content: center;">
+                                    <div style="background-color: #F4F4F4; border-radius: 4px; width: 60px; height: 60px;"></div>
+                                </div>
+                            </div>
+                        </blockquote>
+                    `;
+                    instagramEmbed.classList.remove('hidden');
+
+                    // Load Instagram's script if not already loaded
+                    if (!window.instgrm) {
+                        const script = document.createElement('script');
+                        script.src = "https://www.instagram.com/embed.js";
+                        script.async = true;
+                        document.body.appendChild(script);
+                    } else {
+                        window.instgrm.Embeds.process();
+                    }
+                }
+
+                videoModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        closeModal.addEventListener('click', function () {
+            videoModal.classList.remove('active');
+            youtubeEmbed.src = '';
+            instagramEmbed.innerHTML = '';
+            document.body.style.overflow = 'auto';
+        });
+
+        videoModal.addEventListener('click', function (e) {
+            if (e.target === videoModal) {
+                videoModal.classList.remove('active');
+                youtubeEmbed.src = '';
+                instagramEmbed.innerHTML = '';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+
+                    // Close mobile menu if open
+                    if (!document.querySelector('.mobile-menu').classList.contains('hidden')) {
+                        document.querySelector('.mobile-menu').classList.add('hidden');
+                    }
+                }
+            });
+        });
+
+        // Animate elements on scroll
+        const animateOnScroll = function () {
+            const elements = document.querySelectorAll('.fade-in');
+
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+
+                if (elementPosition < windowHeight - 100) {
+                    element.style.opacity = '1';
+                }
+            });
+        };
+
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+    </script>
+</body>
+
+</html>
